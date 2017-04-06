@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html ng-app="ListaTelefonica">
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/estilo.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <script src="js/angular.min.js" ></script>
+    <script src="js/modulo.js" ></script>
+    <script src="js/diretiva.js" ></script>
+    <script src="js/phone-mask.js" ></script>
+
+  </head>
+  <body ng-controller="ListaController">
+    <div class="container">
+      <div class="jumbotron">
+        <h3 class="animated bounceIn" >{{message | uppercase}}</h3>
+      <hr>
+        <table class="table table-striped">
+          <tr ng-if="contatos.length > 0" class="animated fadeIn">
+            <th></th>
+            <th>{{'Nome' | uppercase}}</th>
+            <th>{{'Telefone' | uppercase}}</th>
+            <th>{{'Operadora' | uppercase}}</th>
+          </tr>
+          <tr ng-class="{selecionado: contato.selecionado}" ng-repeat="contato in contatos">
+            <td><input type="checkbox" ng-model="contato.selecionado"></td>
+            <td>{{contato.nome | uppercase}}</td>
+            <td>{{contato.telefone}}</td>
+            <td>{{contato.operadora.nome | uppercase}}</td>
+          </tr>
+        </table>
+      <hr ng-if="contatos.length > 0">
+        <input class="form-control" type="text" ng-model="contato.nome" placeholder="Nome">
+        <input class="form-control" type="text" ng-model="contato.telefone" placeholder="Telefone com DDD" ui-telefone/>
+        <input class="form-control" type="text" name="data" ng-model="contato.data" placeholder="Data" ui-date/>
+        <select ng-if="contato.telefone" class="form-control animated fadeIn" ng-model="contato.operadora" ng-options="operadora.nome group by operadora.categoria for operadora in operadoras">
+          <option value="">Selecione a operadora...</option>
+        </select>
+
+        <button type="button" class="btn btn-primary btn-block animated pulse" ng-click="adicionarContato(contato)" ng-disabled="!contato.nome || !contato.telefone || !contato.operadora">ADICIONAR</button>
+        <button type="button" class="btn btn-danger btn-block  animated fadeIn" ng-click="apagarContatos(contatos)" ng-if="isContatoSelecionado(contatos)">EXCLUIR</button>
+        <span ng-if="!contatos.length > 0">
+          <div class="alert alert-info">
+            Informe nome e telefone para adicionar um contato.
+          </div>
+        </span>
+      </div>
+  </div>
+  </body>
+</html>
